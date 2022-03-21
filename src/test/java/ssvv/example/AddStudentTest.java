@@ -1,4 +1,4 @@
-package validation;
+package ssvv.example;
 
 import domain.Student;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ public class AddStudentTest {
 
     @Test
     void testValidEntity_shouldWork() {
-        var student = new Student("", "George", 932, "george@ubbcluj.ro", "Marcel");
+        var student = new Student("", "George", 932, "george@ubbcluj.ro");
 
         assertDoesNotThrow(() -> studentRepository.save(student));
 

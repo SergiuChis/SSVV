@@ -1,4 +1,4 @@
-package validation;
+package ssvv.example;
 
 import domain.Student;
 import domain.Tema;
