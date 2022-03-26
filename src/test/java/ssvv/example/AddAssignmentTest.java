@@ -3,6 +3,7 @@ package ssvv.example;
 import domain.Student;
 import domain.Tema;
 import org.junit.After;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import repository.NotaXMLRepo;
 import repository.StudentXMLRepo;
@@ -12,6 +13,7 @@ import service.Service;
 import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
+import validation.ValidationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,10 +40,52 @@ public class AddAssignmentTest {
     }
 
     @Test
-    void testValidEntity_shouldNotWork() {
-        var tema = new Tema("2", "descriere 2",5, 6);
+    void testIdNotNull() {
+        var tema = new Tema(null, "descriere 2",5, 6);
 
-        assertDoesNotThrow(() -> service.addTema(tema));
-        assertEquals(tema.getDescriere(), service.findTema("1").getDescriere());
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
     }
+
+    @Test
+    void testIdEmptyId() {
+        var tema = new Tema("", "descriere",5, 6);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
+    @Test
+    void testDescriptionNotEmpty() {
+        var tema = new Tema("1", "",5, 6);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
+    @Test
+    void testDeadlineNotBelow1() {
+        var tema = new Tema("1", "descriere",0, 6);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
+    @Test
+    void testDeadlineNotAbove14() {
+        var tema = new Tema("1", "descriere",15, 6);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
+    @Test
+    void testPrimireNotBelow1() {
+        var tema = new Tema("1", "descriere",5, 0);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
+    @Test
+    void testPrimireNotAbove14() {
+        var tema = new Tema("1", "descriere",6, 18);
+
+        Assertions.assertThrows(ValidationException.class, () -> service.addTema(tema));
+    }
+
 }
