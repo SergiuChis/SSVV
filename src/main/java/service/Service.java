@@ -59,6 +59,11 @@ public class Service {
      */
     public Student addStudent(Student student) {
         studentValidator.validate(student);
+        var studentToFind = this.findStudent(student.getID());
+
+        if (studentToFind != null && this.findStudent(student.getID()).equals(student)) {
+            throw new ValidationException("Studentul nu poate fi adaugat de doua ori");
+        }
         return studentFileRepository.save(student);
     }
 
