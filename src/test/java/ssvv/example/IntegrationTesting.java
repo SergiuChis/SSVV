@@ -56,4 +56,16 @@ public class IntegrationTesting {
         testIdNotNull();
         testGradeOutsideBoundaries();
     }
+
+    @Test
+    void integrationTestAddStudentAddAssignment() {
+        testShortName();
+        testIdNotNull();
+    }
+
+    @Test
+    void integrationTestAddStudentAddAssignmentAddGrade() {
+        integrationTestAddStudentAddAssignment();
+        testGradeOutsideBoundaries();
+    }
 }
